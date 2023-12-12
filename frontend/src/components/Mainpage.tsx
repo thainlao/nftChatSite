@@ -5,10 +5,9 @@ import PieChart from '../pages/PieChart';
 const myCoin = require('../assets/My_Coin.gif')
 
 const Mainpage = () => {
-    
+
     return (
         <div className='mainpage'>
-
             <div className='left_section_mainpage'>
                 
                 <div className='left_section_mainpage_1st'>

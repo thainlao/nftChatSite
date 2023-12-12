@@ -8,7 +8,6 @@ import 'react-toastify/dist/ReactToastify.css';
 import Web3 from 'web3';
 import { WalletBalances } from '../types/types';
 import { uploadAvatar } from '../store/reducers/userServiceSlice';
-const settings = require('../assets/pngwing.com.png')
 
 const Dashboard: React.FC = () => {
     const navigate = useNavigate();
@@ -150,49 +149,50 @@ const Dashboard: React.FC = () => {
 
     return (
         <div className='dashboard'>
-
-        <div className='user_avatar'>
-        <img className='setting_img' src={settings} onClick={() => setMenuOpen(true)} />
-              
+          <div className='user_avatar'>
+            <div className='user_avatar_section'>
               {user?.avatar ? (
-                <img className="avatar_img" src={`http://localhost:5001/${user.avatar}`} alt="User Avatar" />
+              <img className="avatar_img" src={`http://localhost:5001/${user.avatar}`} alt="User Avatar" />
               ) : (
-                <div className="placeholder_circle">
-                  <h4>{user?.username.split(' ').map((a) => a[0] + a[1]).join('.')}</h4>
-                </div>
+              <div className="placeholder_circle">
+                <h4>{user?.username.split(' ').map((a) => a[0] + a[1]).join('.')}</h4>
+              </div>
               )}
+
+            <div className='name_section'>
+              <h2>{user?.username}</h2>
+              <h2>{user?.email}</h2>
+              <div>{user?.ethWallets.map((wallet) => (<h2>{wallet}</h2>))}</div>
+            </div>
+            </div>
+            
+            <div className='last_section_user'>
+              <button className='setting_button' onClick={() => setMenuOpen(true)}>Выбрать аватар</button>
+              <button className='setting_button' onClick={handleAddWallet}>Добавить Eth кошелек</button>
+              <a className='setting_button' href='/setting'>Настройки</a>
+
+              <div>
+              {user?.ethWallets.map((ethWallet, index) => {
+                const walletBalance = parseFloat(walletBalances[ethWallet]);
+                return (
+                  <div key={index}>
+                    {isNaN(walletBalance) ? null : (
+                      <>
+                        {ethWallet} - {walletBalance.toFixed(6)} ETH
+                      </>
+                    )}
+                  </div>
+                );
+              })}
+              </div>
             </div>
 
-            <h2>Ваш Username: {user?.username}</h2>
-            <h2>Ваш Email: {user?.email}</h2>
-            <h2>{user?.isActivated ? <h2>Вы активировали аккаунт</h2> : <h2>вы не активировали аккаунт</h2>}</h2>
-
-            <form onSubmit={(e) => e.preventDefault()}>
-              <h2>Добавить ETH Address</h2>
-              <input value={wallet} onChange={(e) => setWallet(e.target.value)}/>
-              <button onClick={handleAddWallet}>Добавить Eth кошелек</button>
-            </form>
-
-            <div>
-              <h2>Ваши Eth Wallets:</h2>
-              {user?.ethWallets.length === 0 ? (
-                <p>Добавьте Eth Wallets</p>
-              ) : (
-                <ul>
-                  {user?.ethWallets.map((ethWallet, index) => (
-                    <li key={index}>
-                      {ethWallet} - {parseFloat(walletBalances[ethWallet]).toFixed(6)} ETH
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </div>
+          </div>
 
             <div>
               Total Value: {loadedWallet ? 'Loading...' : `${totalValue} ETH`}
             </div>
             
-            <a href='/setting'>Настройки</a>
             <button onClick={handleLogout}>Выйти</button>
 
             {isMenuOpen && (
