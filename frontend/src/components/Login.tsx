@@ -69,6 +69,8 @@ const Login = () => {
                         placeholder='Your password...'/>
                     </div>
 
+                    <a href='/reset-password'>Забыли пароль?</a>
+
                     <button onClick={handeloginUser}>Войти</button>
                 </form>
 

@@ -41,6 +41,16 @@ export const uploadAvatar = createAsyncThunk(
     }
 })
 
+export const activateAccount = createAsyncThunk('auth/activateAccount',
+async (activationLink: string) => {
+  try {
+    const { data } = await axios.get(`/auth/activate/${activationLink}`)
+    return data;
+  } catch (e) {
+    console.log(e)
+  }
+})
+
 export const authSlice = createSlice({
     name: 'auth',
     initialState,

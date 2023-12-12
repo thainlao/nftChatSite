@@ -63,6 +63,31 @@ export const addEthWallet = createAsyncThunk('auth/addEtherWallet',
   }
 )
 
+export const requestPasswordReset = createAsyncThunk(
+  "auth/requestPasswordReset",
+  async (email: string) => {
+    try {
+      const { data } = await axios.post('/auth/requestreset', {email})
+      return data;
+    } catch (error) {
+      console.log(error)
+    }
+  }
+);
+
+export const resetPassword = createAsyncThunk(
+  "auth/resetPassword",
+  async ({ resetToken, newPassword }: { resetToken: any, newPassword: string }) => {
+    try {
+      const { data } = await axios.post("/auth/resetpassword", { resetToken, newPassword });
+      return data
+    } catch (error) {
+      throw error;
+    }
+  }
+);
+
+
 export const authSlice = createSlice({
     name: 'auth',
     initialState,
@@ -121,7 +146,32 @@ export const authSlice = createSlice({
             state.isLoading = false;
             state.status = action.payload.message || 'Произошла ошибка'
           });
-          //addEthWallet
+          //requestpaaword
+          builder.addCase(requestPasswordReset.pending, (state) => {
+            state.isLoading = true;
+            state.status = null
+          });
+          builder.addCase(requestPasswordReset.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.status = action.payload.message
+          });
+          builder.addCase(requestPasswordReset.rejected, (state, action: any) => {
+            state.isLoading = false;
+            state.status = action.payload.message || 'Произошла ошибка'
+          });
+          //resetPassword
+          builder.addCase(resetPassword.pending, (state) => {
+            state.isLoading = true;
+            state.status = null
+          });
+          builder.addCase(resetPassword.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.status = action.payload.message
+          });
+          builder.addCase(resetPassword.rejected, (state, action: any) => {
+            state.isLoading = false;
+            state.status = action.payload.message || 'Произошла ошибка'
+          });
 }})
 
 export const checkIsAuth = (state: authState) => Boolean(state.token);

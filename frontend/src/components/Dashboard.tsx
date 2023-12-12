@@ -165,6 +165,7 @@ const Dashboard: React.FC = () => {
 
             <h2>Ваш Username: {user?.username}</h2>
             <h2>Ваш Email: {user?.email}</h2>
+            <h2>{user?.isActivated ? <h2>Вы активировали аккаунт</h2> : <h2>вы не активировали аккаунт</h2>}</h2>
 
             <form onSubmit={(e) => e.preventDefault()}>
               <h2>Добавить ETH Address</h2>

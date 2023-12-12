@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { addEthWallet, getUser, login, registration, updateUserEmail, updateUserUsername, uploadAvatar } from '../controllers/auth.js'
+import { activate, addEthWallet, getUser, login, registration, requestPasswordReset, resetPassword, updateUserEmail, updateUserUsername, uploadAvatar } from '../controllers/auth.js'
 import { checkAuth } from '../utils/CheckAuth.js';
 
 const router = new Router()
@@ -25,5 +25,11 @@ router.patch("/updateusername", checkAuth, updateUserUsername);
 //avatar
 router.post('/changeimg', checkAuth, uploadAvatar);
 
+//activate
+router.get('/activate/:link', activate);
+
+//resetpassword
+router.post("/requestreset", requestPasswordReset);
+router.post("/resetpassword", resetPassword);
 
 export default router
